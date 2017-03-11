@@ -1,0 +1,31 @@
+# The version of our Docker Compose file.
+version: '2.0'
+
+services:
+  # Our web container
+  web:
+
+    # Build's the image based on Docker file in our app's Root Directory
+    build: ./app
+
+    # Creates a volume from our application root to a path relative to the container's Compose file.
+    volumes:
+      - "./app:/src/app"
+
+    # Forward the container's port 3000 to port 80 on the host environment.
+    ports:
+      - "80:3000"
+
+    # Links the web container to the redis container created below.
+    links:
+      - redis
+
+  # Our redis container
+  redis:
+
+    # Retrieves the latest redis image from Docker Hub
+    image: redis:latest
+
+    # Forward and expose the container's port 6379 to the host environment.
+    ports:
+      - "6379:6379"
